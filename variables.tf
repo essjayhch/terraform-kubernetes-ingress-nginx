@@ -17,3 +17,9 @@ variable "cloud_provider" {
   description = "Name of the Provider that you are running K8s on (*generic|node_port)"
   default     = "generic"
 }
+
+
+variable "deployment_name" {
+  description  = "pod name"
+  default = "nginx-ingress-controller"
+}
