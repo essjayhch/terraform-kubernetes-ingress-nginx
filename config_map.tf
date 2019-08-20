@@ -7,6 +7,10 @@ resource "kubernetes_config_map" "nginx-configuration" {
       "app.kubernetes.io/part-of" = "ingress-nginx"
     }
   }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "kubernetes_config_map" "tcp-services" {
@@ -18,6 +22,10 @@ resource "kubernetes_config_map" "tcp-services" {
       "app.kubernetes.io/part-of" = "ingress-nginx"
     }
   }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "kubernetes_config_map" "udp-services" {
@@ -28,5 +36,9 @@ resource "kubernetes_config_map" "udp-services" {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"
     }
+  }
+
+  lifecycle {
+    ignore_changes = all
   }
 }
