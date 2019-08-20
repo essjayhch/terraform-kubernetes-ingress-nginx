@@ -1,7 +1,7 @@
 resource "kubernetes_service" "ingress-nginx-service" {
   metadata {
-    name      = "ingress-nginx"
-    namespace = var.namespace
+    name      = "${var.deployment_name}-ingress-nginx"
+    namespace = kubernetes_namespace.namespace.metadata.0.name
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"

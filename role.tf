@@ -1,6 +1,7 @@
 resource "kubernetes_role" "nginx-ingress-role" {
   metadata {
-    name = "nginx-ingress-role"
+    name = "${var.deployment_name}-role"
+
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"

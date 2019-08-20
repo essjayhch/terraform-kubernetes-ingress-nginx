@@ -18,7 +18,6 @@ variable "cloud_provider" {
   default     = "generic"
 }
 
-
 variable "deployment_name" {
   description  = "pod name"
   default = "nginx-ingress-controller"

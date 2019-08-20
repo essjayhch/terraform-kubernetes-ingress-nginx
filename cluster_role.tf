@@ -1,6 +1,6 @@
 resource "kubernetes_cluster_role" "nginx-ingress-clusterrole" {
   metadata {
-    name = "nginx-ingress-clusterrole"
+    name = "${var.deployment_name}-clusterrole"
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"
