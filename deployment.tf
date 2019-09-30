@@ -121,6 +121,18 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
             success_threshold = 1
             timeout_seconds   = 10
           }
+
+          resources {
+            requests  {
+              cpu = local.actual_resource_requests["cpu"]
+              memory = local.actual_resource_requests["memory"]
+            }
+
+            limits {
+              cpu = local.actual_resource_limits["cpu"]
+              memory = local.actual_resource_limits["cpu"]
+            }
+          }
         }
         volume {
           name = "${kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name}"

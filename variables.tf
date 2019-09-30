@@ -22,3 +22,31 @@ variable "deployment_name" {
   description  = "pod name"
   default = "nginx-ingress-controller"
 }
+
+variable "resource_requests" {
+  type = "map"
+
+  description = <<EOF
+Resource Requests
+ref http://kubernetes.io/docs/user-guide/compute-resources/
+resource_requests = {
+  memory = "256Mi"
+  cpu = "100m"
+}
+EOF
+  default = {}
+}
+
+variable "resource_limits" {
+  type = "map"
+
+  description = <<EOF
+Resource Requests
+ref http://kubernetes.io/docs/user-guide/compute-resources/
+resource_limits = {
+  memory = "256Mi"
+  cpu = "100m"
+}
+EOF
+  default = {}
+}
