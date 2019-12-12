@@ -130,7 +130,7 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
 
             limits {
               cpu = local.actual_resource_limits["cpu"]
-              memory = local.actual_resource_limits["cpu"]
+              memory = local.actual_resource_limits["memory"]
             }
           }
         }
