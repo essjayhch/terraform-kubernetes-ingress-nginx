@@ -50,3 +50,8 @@ resource_limits = {
 EOF
   default = {}
 }
+
+variable "create_default_service" {
+  description = "Allow the creation of the default NGINX ingress service. Defaults to `true`"
+  default = true
+}

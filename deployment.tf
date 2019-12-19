@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
             "--configmap=$POD_NAMESPACE/${kubernetes_config_map.nginx-configuration.metadata.0.name}",
             "--tcp-services-configmap=$POD_NAMESPACE/${kubernetes_config_map.tcp-services.metadata.0.name}",
             "--udp-services-configmap=$POD_NAMESPACE/${kubernetes_config_map.udp-services.metadata.0.name}",
-            "--publish-service=$POD_NAMESPACE/${kubernetes_service.ingress-nginx-service.metadata.0.name}",
+            "--publish-service=$POD_NAMESPACE/${kubernetes_service.ingress-nginx-service.0.metadata.0.name}",
             "--annotations-prefix=nginx.ingress.kubernetes.io"
           ]
 
