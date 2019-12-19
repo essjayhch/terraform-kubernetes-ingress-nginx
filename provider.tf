@@ -28,4 +28,6 @@ resource "kubernetes_service" "ingress-nginx-service" {
       target_port = "https"
     }
   }
+
+  count = "${var.create_default_service ? 1 : 0}"
 }
