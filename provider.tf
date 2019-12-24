@@ -6,6 +6,7 @@ resource "kubernetes_service" "ingress-nginx-service" {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"
     }
+    annotations = var.service_annotations
   }
 
   spec {

@@ -50,3 +50,8 @@ resource_limits = {
 EOF
   default = {}
 }
+
+variable "service_annotations" {
+  description = "The annotations to set in `ingress-nginx-service`"
+  default     = {}
+}
