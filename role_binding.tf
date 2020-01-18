@@ -1,6 +1,6 @@
 resource "kubernetes_role_binding" "nginx-ingress-role-nisa-binding" {
   metadata {
-    name      = "${var.deployment_name}-nisa-binding"
+    name      = "nginx-ingress-role-nisa-binding"
     namespace = kubernetes_namespace.namespace.metadata.0.name
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"

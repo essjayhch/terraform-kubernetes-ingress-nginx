@@ -1,6 +1,6 @@
 resource "kubernetes_service" "ingress-nginx-service" {
   metadata {
-    name      = "${var.deployment_name}-ingress-nginx"
+    name      = "ingress-nginx"
     namespace = kubernetes_namespace.namespace.metadata.0.name
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"
@@ -9,7 +9,7 @@ resource "kubernetes_service" "ingress-nginx-service" {
   }
 
   spec {
-    external_traffic_policy = var.cloud_provider == "node_port" ? "" : "Local"
+    external_traffic_policy = var.cloud_provider == "node_port" ? "Cluster" : "Local"
     type                    = var.cloud_provider == "node_port" ? "NodePort" : "LoadBalancer"
     selector = {
       "app.kubernetes.io/name"    = "ingress-nginx"

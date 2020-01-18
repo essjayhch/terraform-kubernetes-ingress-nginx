@@ -1,6 +1,6 @@
 resource "kubernetes_cluster_role_binding" "nginx-ingress-clusterrole-nisa-binding" {
   metadata {
-    name = "${var.deployment_name}-clusterrole-nisa-binding"
+    name = "nginx-ingress-clusterrole-nisa-binding"
     labels = {
       "app.kubernetes.io/name"    = "ingress-nginx"
       "app.kubernetes.io/part-of" = "ingress-nginx"
