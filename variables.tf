@@ -23,8 +23,13 @@ variable "deployment_name" {
   default = "nginx-ingress-controller"
 }
 
+variable "annotations_prefix" {
+  description  = "Set the prefix reguired for annotations for this deployment of nginx"
+  default = "nginx.ingress.kubernetes.io"
+}
+
 variable "resource_requests" {
-  type = "map"
+  type = map
 
   description = <<EOF
 Resource Requests
@@ -38,7 +43,7 @@ EOF
 }
 
 variable "resource_limits" {
-  type = "map"
+  type = map
 
   description = <<EOF
 Resource Requests
