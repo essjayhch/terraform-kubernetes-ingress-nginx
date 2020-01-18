@@ -31,7 +31,8 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
       }
 
       spec {
-        service_account_name = kubernetes_service_account.nginx-ingress-serviceaccount.metadata.0.name
+        termination_grace_period_seconds = 300
+        service_account_name = kubernetes_service_account.nginx-ingress-serviceaccount.metadata.0.name        
 
         container {
           name  = "nginx-ingress-controller"
@@ -39,11 +40,11 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
 
           args = [
             "/nginx-ingress-controller",
-            "--configmap=$POD_NAMESPACE/${kubernetes_config_map.nginx-configuration.metadata.0.name}",
-            "--tcp-services-configmap=$POD_NAMESPACE/${kubernetes_config_map.tcp-services.metadata.0.name}",
-            "--udp-services-configmap=$POD_NAMESPACE/${kubernetes_config_map.udp-services.metadata.0.name}",
-            "--publish-service=$POD_NAMESPACE/${kubernetes_service.ingress-nginx-service.metadata.0.name}",
-            "--annotations-prefix=nginx.ingress.kubernetes.io"
+            "--configmap=$(POD_NAMESPACE)/${kubernetes_config_map.nginx-configuration.metadata.0.name}",
+            "--tcp-services-configmap=$(POD_NAMESPACE)/${kubernetes_config_map.tcp-services.metadata.0.name}",
+            "--udp-services-configmap=$(POD_NAMESPACE)/${kubernetes_config_map.udp-services.metadata.0.name}",
+            "--publish-service=$(POD_NAMESPACE)/ingress-nginx",
+            "--annotations-prefix=${var.annotations_prefix}"
           ]
 
           security_context {
@@ -82,7 +83,7 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
 
           volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-            name       = "${kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name}"
+            name       = kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name
             read_only  = true
           }
 
@@ -130,17 +131,46 @@ resource "kubernetes_deployment" "nginx-ingress-controller" {
 
             limits {
               cpu = local.actual_resource_limits["cpu"]
-              memory = local.actual_resource_limits["cpu"]
+              memory = local.actual_resource_limits["memory"]
+            }
+          }
+
+          lifecycle {
+            pre_stop {
+              exec {
+                command = ["/wait-shutdown"]
+              }
             }
           }
         }
         volume {
-          name = "${kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name}"
+          name = kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name
 
           secret {
-            secret_name = "${kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name}"
+            secret_name = kubernetes_service_account.nginx-ingress-serviceaccount.default_secret_name
           }
         }
+      }
+    }
+  }
+}
+
+resource "kubernetes_limit_range" "nginx-ingress" {
+  metadata {
+    name      = "ingress-nginx"
+    namespace = kubernetes_namespace.namespace.metadata.0.name
+    labels = {
+      "app.kubernetes.io/name" : "ingress-nginx"
+      "app.kubernetes.io/part-of" : "ingress-nginx"
+    }
+  }
+
+  spec {
+    limit {
+      type = "Container"
+      default = {
+        cpu    = "100m"
+        memory = "90Mi"
       }
     }
   }
